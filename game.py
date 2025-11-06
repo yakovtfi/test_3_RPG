@@ -72,7 +72,7 @@ class Game:
                 if player.hp <= 0:
                     print("You died. Game over.")
                     break
-            if choice == "2":
+            elif choice == "2":
                 self.start_dungeon(player)
                 break
             elif choice == "3":
@@ -82,3 +82,4 @@ class Game:
                 print("Invalid choice.")
 
                 print("Invalid choice.")
+
