@@ -2,6 +2,7 @@ import random
 from core.player import Player
 from core.orc import Orc
 from core.goblin import Goblin
+from core.boss import Boss
 
 class Game:
     def roll_dice(self, sides):
@@ -37,11 +38,33 @@ class Game:
                 print(f"{defender.name} is defeated!")
                 break
 
+    def start_dungeon(self, player):
+        rooms = [None]*8
+        positions = random.sample(range(8), random.randint(3, 6))
+        for i in positions:
+            rooms[i] = self.choose_random_monster()
+        print("\nDungeon begins!")
+        for i in range(8):
+            print(f"\nEntering room {i + 1}")
+            if rooms[i]:
+                monster = rooms[i]
+                self.battle(player, monster)
+                if player.hp <= 0:
+                    print("You died in the dungeon.")
+                    return
+        boss = Boss("Zed")
+        print("\nBoss fight!")
+        self.battle(player, boss)
+        if player.hp > 0:
+            print("You defeated the boss and cleared the dungeon!")
+        else:
+            print("You were slain by the boss.")
+
     def start(self):
         name = input("Enter player name: ")
         player = Player(name)
         while True:
-            print("\n1. Battle\n2. Exit")
+            print("\n1. Battle\n2. start_dungeon\n3. Exit")
             choice = input("Choose: ")
             if choice == "1":
                 monster = self.choose_random_monster()
@@ -49,8 +72,13 @@ class Game:
                 if player.hp <= 0:
                     print("You died. Game over.")
                     break
-            elif choice == "2":
+            if choice == "2":
+                self.start_dungeon(player)
+                break
+            elif choice == "3":
                 print("Goodbye!")
                 break
             else:
+                print("Invalid choice.")
+
                 print("Invalid choice.")
